@@ -1,42 +1,23 @@
 from collections import deque
 
-m, n, k = map(int, input().split())
-graph = [[0] * n for _ in range(m)]
-for _ in range(k):
-    x1, y1, x2, y2 = map(int, input().split())
-    for i in range(x1, x2):
-        for j in range(m - y1 - 1, m - y2 - 1, -1):
-            graph[j][i] = 1
-
-dx = [-1, 1, 0, 0]
-dy = [0, 0, -1, 1]
+n, k = map(int, input().split())
 
 
-def bfs(x, y):
-    global answer
+def bfs():
     queue = deque()
-    queue.append((x, y))
-    graph[x][y] = 1
-    size = 1
+    queue.append(n)
     while queue:
-        x, y = queue.popleft()
-        for i in range(4):
-            nx = x + dx[i]
-            ny = y + dy[i]
-            if 0 <= nx < m and 0 <= ny < n and graph[nx][ny] == 0:
-                graph[nx][ny] = 1
-                queue.append((nx, ny))
-                size += 1
-    result.append(size)
+        x = queue.popleft()  # x는 큐 왼쪽에서 빼낸 값
+        if x == k:  # 빼낸 값이 k와 같다면
+            print(dist[x])  # x를 빼낸다
+            break
+        for nx in (x - 1, x + 1, 2 * x):  # x의 방향 설정
+            if 0 <= nx <= MAX and not dist[nx]:  # 방문체크
+                dist[nx] = dist[x] + 1
+                queue.append(nx)
 
 
-result = []
-for i in range(m):
-    for j in range(n):
-        if graph[i][j] == 0:
-            bfs(i, j)
+MAX = 10 ** 5
+dist = [0] * (MAX + 1)
 
-result.sort()
-print(len(result))
-for i in result:
-    print(i, end=' ')
+bfs()
