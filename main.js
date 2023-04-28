@@ -2,16 +2,14 @@
 let fs = require("fs");
 let input = fs.readFileSync("./input.txt").toString().split("\n");
 
-let groups = input[0].split("-");
-console.log(groups);
-let answer = 0;
-for (i = 0; i < groups.length; i++) {
-  let cur = groups[i]
-    .split("+")
-    .map(Number)
-    .reduce((a, b) => a + b);
-  console.log(cur);
-  if (i == 0) answer += cur;
-  else answer -= cur;
+let t = Number(input[0]);
+let line = 1;
+
+for (let tc = 1; tc <= t; t++) {
+  n = Number(input[line]);
+  let arr = [];
+  for (let i = line + 1; i <= line + n; i++) {
+    let data = input[i].split(" ").map(Number);
+    arr.push(data);
+  }
 }
-console.log(answer);
