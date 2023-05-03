@@ -1,15 +1,24 @@
-// fs 모듈을 이용해 파일 전체를 읽어와 문자열로 저장하기
 let fs = require("fs");
 let input = fs.readFileSync("./input.txt").toString().split("\n");
 
-let t = Number(input[0]);
-let line = 1;
+let n = Number(input[0]);
+let dist = input[1].split(" ").map(Number);
+let cost = input[2].split(" ").map(Number);
+// console.log(dist, cost);
 
-for (let tc = 1; tc <= t; t++) {
-  n = Number(input[line]);
-  let arr = [];
-  for (let i = line + 1; i <= line + n; i++) {
-    let data = input[i].split(" ").map(Number);
-    arr.push(data);
-  }
+//주유비용(cost) 배열의 값을 비오름차순이 되도록 변환
+// [5, 2, 4, 1] => [5, 2, 2, 1]
+
+let minCost = cost[0];
+
+for (let i = 0; i < n; i++) {
+  minCost = Math.min(minCost, cost[i]);
+  cost[i] = minCost;
 }
+
+let answer = BigInt(0); //큰 정수를 처리할 때 사용
+for (let i = 0; i < n - 1; i++) {
+  answer += BigInt(dist[i]) * BigInt(cost[i]);
+}
+
+console.log(String(answer));
