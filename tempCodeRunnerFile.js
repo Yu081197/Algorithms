@@ -1,1 +1,1 @@
-console.log(dist, cost);
+]);
