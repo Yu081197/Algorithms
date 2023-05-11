@@ -1,24 +1,26 @@
 let fs = require("fs");
-let input = fs.readFileSync("./input.txt").toString().split("\n");
-
-let n = Number(input[0]);
-let dist = input[1].split(" ").map(Number);
-let cost = input[2].split(" ").map(Number);
-// console.log(dist, cost);
-
-//주유비용(cost) 배열의 값을 비오름차순이 되도록 변환
-// [5, 2, 4, 1] => [5, 2, 2, 1]
-
-let minCost = cost[0];
-
-for (let i = 0; i < n; i++) {
-  minCost = Math.min(minCost, cost[i]);
-  cost[i] = minCost;
+let input = fs.readFileSync("/dev/stdin").toString().split("\n");
+// 피보나치 수들 계산
+pibo = [];
+pibo.push(0);
+pibo.push(1);
+while (pibo[pibo.length - 1] < 1e9)
+  pibo.push(pibo[pibo.length - 2] + pibo[pibo.length - 1]);
+let testCases = Number(input[0]);
+for (let tc = 1; tc <= testCases; tc++) {
+  let n = Number(input[tc]);
+  let result = [];
+  let i = pibo.length - 1; // 가장 큰 피보나치 수의 인덱스
+  while (n > 0) {
+    // n이 0이 될 때까지
+    if (n >= pibo[i]) {
+      // 가능한 큰 피보나치 수부터 빼기
+      n -= pibo[i];
+      result.push(pibo[i]);
+    }
+    i--;
+  }
+  let answer = "";
+  for (let i = result.length - 1; i >= 0; i--) answer += result[i] + " "; // 오름차순 출력
+  console.log(answer);
 }
-
-let answer = BigInt(0); //큰 정수를 처리할 때 사용
-for (let i = 0; i < n - 1; i++) {
-  answer += BigInt(dist[i]) * BigInt(cost[i]);
-}
-
-console.log(String(answer));
