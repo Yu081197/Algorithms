@@ -1,29 +1,27 @@
-from collections import deque
 import sys
+from collections import deque
+
+input = sys.stdin.readline
 
 sys.stdin = open("input.txt", "r")
 
-n = int(input()) # 수의 개수
-arr = list(map(int, input().split())) # 수열 데이터
+n, m = map(int, input().split())  # 원소의 개수, 뽑아내는 횟수
+d = deque([i for i in range(1, n+1)])  # 1부터 N까지의 원소를 삽입
+targets = list(map(int, input().split()))  # 뽑아낼 원소 목록
+cnt = 0  # 회전 연산 수행 횟수
 
-stack = [] # 스택 초기화
-NGE = [-1] * n # 오큰수 배열
+for target in targets:  # 뽑아낼 원소를 하나씩 확인하며
+    index = d.index(target)  # 덱에서 해당 원소의 위치를 찾기
+    if index <= len(d) // 2:  # 왼쪽으로 돌리는 게 더 빠른 경우
+        for i in range(index):  # 회전 연산 반복 수행
+            x = d.popleft()
+            d.append(x)
+            cnt += 1
+    else:  # 오른쪽으로 돌리는 게 더 빠른 경우
+        for i in range(len(d) - index):  # 회전 연산 반복 수행
+            x = d.pop()
+            d.appendleft(x)
+            cnt += 1
+    d.popleft()  # 원소 꺼내기
 
-for i in range(n):
-    x = arr[i] # arr의 수를 하나씩 확인
-    if len(stack) == 0 or stack[-1][0] >= x: # 내림차순 형태라면(작거나 같은 원소를 만났다면)
-        stack.append((x, i)) # (수, 인덱스) 형태로 삽입한다.
-    else: # 오름차순 형태라면(큰 수를 만났다면)
-        while len(stack) > 0: # 역방향으로 하나씩 꺼내기
-            previous, index = stack.pop()
-            if previous >= x: # 크거나 같은 이전 원소를 만났다면 다시 삽입
-                stack.append((previous, index))
-                break
-            else:
-                NGE[index] = x # 오큰수 기록
-        stack.append((x, i)) # (수, 인덱스) 형태로 삽입
-        
-for x in NGE: # 오큰수를 하나씩 출력
-    print(x, end=" ")
-            
-        
+print(cnt)
