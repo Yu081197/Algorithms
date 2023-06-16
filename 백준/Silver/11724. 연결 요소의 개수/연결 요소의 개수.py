@@ -1,29 +1,36 @@
 import sys
+from collections import deque
 
-sys.setrecursionlimit(10 ** 8)
 input = sys.stdin.readline
 
-N, M = map(int, input().split())
-adj = [[0] * N for _ in range(N)]
-for _ in range(M):
-    u, v = map(lambda x: x - 1, map(int, input().split()))
-    adj[u][v] = adj[v][u] = 1
 
-chk = [False] * N
-ans = 0
+def find_parent(parent, x):
+    if parent[x] != x:
+        parent[x] = find_parent(parent, parent[x])
+    return parent[x]
 
 
-def dfs(now):
-    for nxt in range(N):
-        if adj[now][nxt] and not chk[nxt]:
-            chk[nxt] = True
-            dfs(nxt)
+def union_parent(parent, a, b):
+    a = find_parent(parent, a)
+    b = find_parent(parent, b)
+    if a < b:
+        parent[b] = a
+    else:
+        parent[a] = b
 
 
-for i in range(N):
-    if not chk[i]:
-        chk[i] = True
-        ans += 1
-        dfs(i)
+n, m = map(int, input().split())
+parent = [0] * (n+1)
 
-print(ans)
+for i in range(1, n+1):
+    parent[i] = i
+
+for i in range(m):
+    a, b = map(int, input().split())
+    union_parent(parent, a, b)
+
+counter = set()
+for i in range(1, n+1):
+    counter.add(find_parent(parent, i))
+
+print(len(counter))
