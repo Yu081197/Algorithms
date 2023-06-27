@@ -1,23 +1,24 @@
 import sys
 from collections import deque
+
+
 sys.stdin = open("input.txt", "r")
+
 input = sys.stdin.readline
-import heapq
 
-n = int(input())
-lectures = []
+s1, s2, s3 = map(int, input().split())
+result = []
+
+for i in range(1, s1 + 1):
+    for j in range(1, s2 + 1):
+        for k in range(1, s3 + 1):
+            summary = i + j + k
+            result.append(summary)
+result.sort()
 
 
-for i in range(n):
-    id, start, end = map(int, input().split())
-    heapq.heappush(lectures, (start, end))
-
-heap = []
-end = heapq.heappop(lectures)[1]
-heapq.heappush(heap, end)
-answer = 1
-
-for i in range(n-1):
-    new_start, new_end, heapq.heappop(lectures)
-    end = heapq.heappop(heap)
-    
+s = list(set(result))
+cnt = []
+for i in s:
+    cnt.append(result.count(i))
+print(s[cnt.index(max(cnt))])
