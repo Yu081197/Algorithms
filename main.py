@@ -1,24 +1,40 @@
 import sys
-from collections import deque
-
 
 sys.stdin = open("input.txt", "r")
 
 input = sys.stdin.readline
 
-s1, s2, s3 = map(int, input().split())
-result = []
+n, c = map(int, input().split())
 
-for i in range(1, s1 + 1):
-    for j in range(1, s2 + 1):
-        for k in range(1, s3 + 1):
-            summary = i + j + k
-            result.append(summary)
-result.sort()
+array = []
+for i in range(n):
+    array.append(int(input()))
+
+array.sort()
 
 
-s = list(set(result))
-cnt = []
-for i in s:
-    cnt.append(result.count(i))
-print(s[cnt.index(max(cnt))])
+def binary_search(array, start, end):
+    while start <= end:
+        mid = (start + end) // 2
+        current = array[0]
+        count = 1
+
+        for i in range(1, len(array)):
+            if array[i] >= current + mid:
+                count += 1
+                current = array[i]
+
+        if count >= c:
+            global answer
+            start = mid + 1
+            answer = mid
+        else:
+            end = mid - 1
+
+
+start = 1
+end = array[-1] - array[0]
+answer = 0
+
+binary_search(array, start, end)
+print(answer)
