@@ -17,7 +17,7 @@ for i in range(1, n + 1):
 arr.sort(key=lambda data: data[3])
 for i in range(1, n + 1):
     for j in range(0, i):
-        if arr[i][1] > arr[j][1]:
+        if arr[i][1] > arr[j][1]: # 현재 인덱스 i에서 이전 인덱스 j까지의 부분 문자열 중, 너비가 증가하는 경우에만 부분 문자열의 길이를 업데이트합니다. dp[i]에는 현재 인덱스까지의 최대 부분 문자열의 길이가 저장됩니다.
             dp[i] = max(dp[i],dp[j] + arr[i][2])
 
 max_value = max(dp)
