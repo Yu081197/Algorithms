@@ -1,23 +1,24 @@
 from collections import deque
+import sys
+
+input = sys.stdin.readline
 
 n, k = map(int, input().split())
 
+MAX = 100001
+arr = [0] * (MAX + 1)
 
 def bfs():
-    queue = deque()
-    queue.append(n)
-    while queue:
-        x = queue.popleft()  # x는 큐 왼쪽에서 빼낸 값
-        if x == k:  # 빼낸 값이 k와 같다면
-            print(dist[x])  # x를 빼낸다
+    q = deque()
+    q.append(n)
+    while q:
+        x = q.popleft()
+        if x == k:
+            print(arr[x])
             break
-        for nx in (x - 1, x + 1, 2 * x):  # x의 방향 설정
-            if 0 <= nx <= MAX and not dist[nx]:  # 방문체크
-                dist[nx] = dist[x] + 1
-                queue.append(nx)
-
-
-MAX = 10 ** 5
-dist = [0] * (MAX + 1)
+        for nx in (x - 1, x + 1, x * 2):
+            if 0 <= nx <= MAX and not arr[nx]:
+                arr[nx] = arr[x] + 1
+                q.append(nx)
 
 bfs()
