@@ -1,40 +1,25 @@
+from collections import deque
 import sys
 
 sys.stdin = open("input.txt", "r")
 
 input = sys.stdin.readline
 
-n, c = map(int, input().split())
-
-array = []
-for i in range(n):
-    array.append(int(input()))
-
-array.sort()
+MAX = 100001
+n, k = map(int, input().split())
+arr = [0] * MAX
 
 
-def binary_search(array, start, end):
-    while start <= end:
-        mid = (start + end) // 2
-        current = array[0]
-        count = 1
-
-        for i in range(1, len(array)):
-            if array[i] >= current + mid:
-                count += 1
-                current = array[i]
-
-        if count >= c:
-            global answer
-            start = mid + 1
-            answer = mid
-        else:
-            end = mid - 1
+def bfs():
+    q = deque([n])
+    while n:
+        x = q.popleft()
+        if x == k:
+            return arr[x]
+        for nx in (x - 1, x + 1, x * 2):
+            if 0 <= nx < MAX and not arr[nx]:
+                arr[nx] = arr[x] + 1
+                q.append(nx)
 
 
-start = 1
-end = array[-1] - array[0]
-answer = 0
-
-binary_search(array, start, end)
-print(answer)
+print(bfs())
