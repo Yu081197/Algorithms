@@ -23,4 +23,3 @@ def bfs():
 
 
 print(bfs())
-ㅁㄴㅇㄹㅁㄴㅇ
